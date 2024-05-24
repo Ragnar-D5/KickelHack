@@ -11,13 +11,14 @@ install all requirements:
 **GUI**
 
 - [ ] Tabsystem
-  - [ ] Tabs work
+  - [ ] Tabs work (like Bosca Ceoil)
   - [ ] dropdown menus (save,open,import,export file / choose intrument)
 - [ ] Arrangment:
   - [ ] drag/drop blocks on multiple Timelines (like FL Studio)
   - [ ] optional: visualize MIDI/WAV-Data (like FL Studio)
 - [ ] Compose:
-  - [ ] place notes to create blocks
+  - [ ] place notes to create blocks (like Bosca Ceoil)
+  - [ ] scrollable Notelines (like Bosca Ceoil)
   - [ ] optional: play with keys link piano
 - [ ] Instrument:
   - [ ] button or similar new fequency + slider for frequency amplitude
