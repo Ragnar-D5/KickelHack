@@ -1,4 +1,4 @@
-## Benzaiten (temporary App-name) ##
+## Benzaiten (preliminary App-name) ##
 
 save all requirements:
 
