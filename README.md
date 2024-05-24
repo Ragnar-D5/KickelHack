@@ -1,4 +1,4 @@
-##Benzaiten##
+## Benzaiten ##
 
 (temporary App-name)
 
