@@ -28,7 +28,7 @@ install all requirements:
 **BACKEND-Bridge**
 
 - [ ] Import/Export/etc.
-  - [ ] Import MIDI/WAV
+  - [x] Import MIDI/WAV
   - [ ] Export WAV
   - [ ] optional: Export note-Blocks as MIDI
   - [ ] Realtime playing
