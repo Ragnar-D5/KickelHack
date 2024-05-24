@@ -16,6 +16,7 @@ install all requirements:
   - [ ] optional: visualize MIDI/WAV-Data (like FL Studio)
 - [ ] Compose:
   - [ ] place notes to create blocks
+  - [ ] optional: play with keys link piano + record
 - [ ] Instrument:
   - [ ] button or similar new fequency + slider for frequency amplitude
   - [ ] optional: visualize Wave
