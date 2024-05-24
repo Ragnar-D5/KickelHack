@@ -6,7 +6,7 @@ install all requirements:
 
 `pip install -r /path/to/requirements.txt`
 
-GUI
+**GUI**
 
 - [ ] Tabsystem
   - [ ] Tabs work
