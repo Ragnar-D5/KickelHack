@@ -4,7 +4,7 @@ from arangement.arangement_tab import ArangementTabBody
 from instruments.instrument_tab import InstrumentTabBody
 import pygame
 import pygame_gui
-from pygame_gui.elements import UIButton, UIImage
+from pygame_gui.elements import UIButton, UIImage, UIHorizontalSlider
 from pygame_gui.windows import UIFileDialog
 from pygame_gui.core.utility import create_resource_path
 import instruments
@@ -38,56 +38,76 @@ class Mainwindow:
         self.clock = pygame.time.Clock()
         self.is_running = True
 
-    def run(self):
-        midi_tab = MidiTabBody(self)
-        arangement_tab = ArangementTabBody(self)
-        instrument_tab = InstrumentTabBody(self)
+        self.arangement_button = UIButton(pygame.Rect(0,0,100,25),"Arangement", self.ui_manager)
+        self.midi_button = UIButton(pygame.Rect(100,0,100,25),"Midi", self.ui_manager)
+        self.instrument_button = UIButton(pygame.Rect(200,0,100,25),"Instruments", self.ui_manager)
 
-        active_tab = 1
+
+        # self.slider = UIHorizontalSlider(pygame.Rect((0,0),(300, 25)),25.0, (0.0,100.0), self.ui_manager, object_id="heheha")
+
+
+
+
+    def process_events(self):
+        for event in pygame.event.get():
+            if event.type == pygame_gui.UI_BUTTON_PRESSED:
+                if event.ui_element == self.arangement_button:
+                    self.active_tab = 0
+                elif event.ui_element == self.midi_button:
+                    self.active_tab = 1
+                elif event.ui_element == self.instrument_button:
+                    self.active_tab = 2
+
+            if event.type == pygame.QUIT:
+                self.is_running = False
+                    
+            if (event.type == pygame_gui.UI_BUTTON_PRESSED and
+                    event.ui_element == self.load_button):
+                self.file_dialog = UIFileDialog(pygame.Rect(160, 50, 440, 500),
+                                                self.ui_manager,
+                                                window_title='Load File',
+                                                # initial_file_path='',
+                                                # allow_picking_directories=True,
+                                                allow_existing_files_only=True,
+                                                allowed_suffixes={""})
+                self.load_button.disable()
+
+            if event.type == pygame_gui.UI_FILE_DIALOG_PATH_PICKED:
+                if self.display_loaded_image is not None:
+                    self.display_loaded_image.kill()
+
+            if (event.type == pygame_gui.UI_WINDOW_CLOSE
+                    and event.ui_element == self.file_dialog):
+                self.load_button.enable()
+                self.file_dialog = None
+
+            if self.active_tab == 0:
+                self.arangement_tab.event(event)
+            elif self.active_tab == 1:
+                self.midi_tab.event(event)
+            elif self.active_tab == 2:
+                self.instrument_tab.event(event)
+
+            self.ui_manager.process_events(event)
+
+    def run(self):
+        self.midi_tab = MidiTabBody(self)
+        self.arangement_tab = ArangementTabBody(self)
+        self.instrument_tab = InstrumentTabBody(self)
+
+        self.active_tab = 1
         while self.is_running:
             time_delta = self.clock.tick(60) / 1000.0
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.is_running = False
-
-                if (event.type == pygame_gui.UI_BUTTON_PRESSED and
-                        event.ui_element == self.load_button):
-                    self.file_dialog = UIFileDialog(pygame.Rect(160, 50, 440, 500),
-                                                    self.ui_manager,
-                                                    window_title='Load File',
-                                                    # initial_file_path='',
-                                                    # allow_picking_directories=True,
-                                                    allow_existing_files_only=True,
-                                                    allowed_suffixes={""})
-                    self.load_button.disable()
-
-                if event.type == pygame_gui.UI_FILE_DIALOG_PATH_PICKED:
-                    if self.display_loaded_image is not None:
-                        self.display_loaded_image.kill()
-
-                if (event.type == pygame_gui.UI_WINDOW_CLOSE
-                        and event.ui_element == self.file_dialog):
-                    self.load_button.enable()
-                    self.file_dialog = None
-
-                if active_tab == 0:
-                    arangement_tab.event()
-                elif active_tab == 1:
-                    midi_tab.event(event)
-                elif active_tab == 2:
-                    instrument_tab.event(event)
-
-                self.ui_manager.process_events(event)
-
+            self.process_events()
             self.ui_manager.update(time_delta)
             self.window_surface.blit(self.background, (0, 0))
 
-            if active_tab == 0:
-                arangement_tab.ui()
-            elif active_tab == 1:
-                midi_tab.ui(self.window_surface)
-            elif active_tab == 2:
-                instrument_tab.ui()
+            if self.active_tab == 0:
+                self.arangement_tab.ui()
+            elif self.active_tab == 1:
+                self.midi_tab.ui(self.window_surface)
+            elif self.active_tab == 2:
+                self.instrument_tab.ui()
 
             self.ui_manager.draw_ui(self.window_surface)
 
