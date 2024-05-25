@@ -24,13 +24,6 @@ class Mainwindow:
         self.ui_manager = pygame_gui.UIManager(window_resolution=(w, h))
         self.background = pygame.Surface(size=(w, h), flags=pygame.FULLSCREEN)
         self.background.fill(self.ui_manager.ui_theme.get_colour('dark_bg'))
-        self.load_button = UIButton(relative_rect=pygame.Rect(-180, -60, 150, 30),
-                                    text='Load File',
-                                    manager=self.ui_manager,
-                                    anchors={'left': 'right',
-                                             'right': 'right',
-                                             'top': 'bottom',
-                                             'bottom': 'bottom'})
         self.close_button = UIButton(relative_rect=pygame.Rect(-25,0,25,25),
                                     text='X',
                                     manager=self.ui_manager,
@@ -38,8 +31,6 @@ class Mainwindow:
                                              'right': 'right',
                                              'top': 'bottom',
                                              'top': 'top'})
-
-        self.file_dialog = None
 
         # scale images, if necessary so that their largest dimension does not exceed these values
 
@@ -61,36 +52,19 @@ class Mainwindow:
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == self.arangement_button:
                     self.active_tab = 0
+                    self.midi_tab.load_button.visible = False
                 elif event.ui_element == self.midi_button:
                     self.active_tab = 1
+                    self.midi_tab.load_button.visible = True
                 elif event.ui_element == self.instrument_button:
                     self.active_tab = 2
+                    self.midi_tab.load_button.visible = False
                 elif event.ui_element == self.close_button:
                     self.is_running = False
 
             if event.type == pygame.QUIT:
                 self.is_running = False
-                    
-            if (event.type == pygame_gui.UI_BUTTON_PRESSED and
-                    event.ui_element == self.load_button):
-                self.file_dialog = UIFileDialog(pygame.Rect(160, 50, 440, 500),
-                                                self.ui_manager,
-                                                window_title='Load File',
-                                                # initial_file_path='',
-                                                # allow_picking_directories=True,
-                                                allow_existing_files_only=True,
-                                                allowed_suffixes={""})
-                self.load_button.disable()
-
-            if event.type == pygame_gui.UI_FILE_DIALOG_PATH_PICKED:
-                if self.display_loaded_image is not None:
-                    self.display_loaded_image.kill()
-
-            if (event.type == pygame_gui.UI_WINDOW_CLOSE
-                    and event.ui_element == self.file_dialog):
-                self.load_button.enable()
-                self.file_dialog = None
-
+            
             if self.active_tab == 0:
                 self.arangement_tab.event(event)
             elif self.active_tab == 1:
@@ -117,7 +91,7 @@ class Mainwindow:
             elif self.active_tab == 1:
                 self.midi_tab.ui(self.window_surface)
             elif self.active_tab == 2:
-                self.instrument_tab.ui()
+                self.instrument_tab.ui(self.window_surface)
 
             self.ui_manager.draw_ui(self.window_surface)
 

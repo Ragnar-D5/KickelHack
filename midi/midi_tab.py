@@ -1,4 +1,6 @@
 import pygame as pg
+import pygame_gui
+from pygame_gui.elements import UIButton
 
 BASE_BPM = 120
 BASE_TAKT = 4
@@ -16,6 +18,15 @@ class MidiTabBody:
 
         self.absolute_offset = [0,0]
         self.previous_position = (0,0)
+        
+        self.file_dialog = None
+        self.load_button = UIButton(relative_rect=pg.Rect(-180, -60, 150, 30),
+                                    text='Load File',
+                                    manager=self.parent.ui_manager,
+                                    anchors={'left': 'right',
+                                             'right': 'right',
+                                             'top': 'bottom',
+                                             'bottom': 'bottom'})
 
     def ui(self, screen):
         pg.draw.rect(screen, pg.Color("black"), pg.Rect(RECT_X_OFFSET, RECT_Y_OFFSET, RECT_WIDTH, RECT_HEIGHT), 3)
@@ -47,3 +58,22 @@ class MidiTabBody:
                     self.absolute_offset[1] += pos[1] - self.previous_position[1]
 
             self.previous_position = pos
+
+        if (event.type == pygame_gui.UI_BUTTON_PRESSED and event.ui_element == self.load_button):
+            self.file_dialog = UIFileDialog(pg.Rect(160, 50, 440, 500),
+                                            self.ui_manager,
+                                            window_title='Load File',
+                                            # initial_file_path='',
+                                            # allow_picking_directories=True,
+                                            allow_existing_files_only=True,
+                                            allowed_suffixes={""})
+            self.load_button.disable()
+
+        if (event.type == pygame_gui.UI_WINDOW_CLOSE
+                    and event.ui_element == self.file_dialog):
+                self.load_button.enable()
+                self.file_dialog = None
+        
+        if event.type == pygame_gui.UI_FILE_DIALOG_PATH_PICKED:
+                if self.display_loaded_image is not None:
+                    self.display_loaded_image.kill()
