@@ -48,7 +48,7 @@ install all requirements:
 
 - [ ] Base-Synthesis
   - [x] Generate frequency modulated waves (sine,square,sawtooth,harmonic) + files as np.arrays
-  - [ ] adding Sounds together/global np.array
+  - [x] adding Sounds together/global np.array
   - [ ] my task now: Realtime playing
   - [ ] louder/quieter/fade in/out/splice/echo/delay/speed change/pitch shift (important for other stuff)
   - [ ] optional: fluid pitch shift
@@ -60,7 +60,7 @@ install all requirements:
 - [ ] Instrument-Synthesis
   - [ ] smol custom sound palette (like 4 or 5) with frequency vectors
   - [ ] Envelope - ADSR (i forgor)
-  - [ ] play midi with custom sounds
+  - [x] play midi with custom sounds
   - [ ] handle percussion seperatly (its easier i hope)
 
 (not necessesarily in Order; no need for polish)

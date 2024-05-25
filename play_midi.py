@@ -20,4 +20,4 @@ def midi_play_harmonic(midi,freq = [1],base_wave = np.sin):
     return out
 
 def midi_play_instrument(midi,instr):
-    pass
+    return midi.synthesize(fs=instr.sample_rate,wave=instr.wave_func)*INT16_LIMIT
