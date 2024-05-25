@@ -34,13 +34,12 @@ install all requirements:
   - [x] Import MIDI/WAV
   - [ ] Export WAV
   - [ ] optional: Export note-Blocks as MIDI
-  - [ ] Realtime playing
   - [ ] optional: save/open/etc.
   - [ ] optional: record play with keys link piano
 - [ ] Instrument:
   - [ ] optional: save instrument-setting (json idk)
 - [ ] optional: Setting
-- [ ] only if necessary: complete GUI
+- [ ] nvm mainly your task now: complete GUI
 
 (not necessesarily in Order; no need for polish)
 
@@ -50,6 +49,7 @@ install all requirements:
 - [ ] Base-Synthesis
   - [ ] Generate frequency modulated waves (sine,square,sawtooth,harmonic) + files as np.arrays
   - [ ] adding Sounds together/global np.array
+  - [ ] my task now: Realtime playing
   - [ ] louder/quieter/fade in/out/splice/echo/delay/speed change/pitch shift (important for other stuff)
   - [ ] optional: fluid pitch shift
   - [ ] arpeggio/noise gen
