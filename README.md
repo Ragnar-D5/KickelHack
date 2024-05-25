@@ -47,7 +47,7 @@ install all requirements:
 **BACKEND-Math**
 
 - [ ] Base-Synthesis
-  - [ ] Generate frequency modulated waves (sine,square,sawtooth,harmonic) + files as np.arrays
+  - [x] Generate frequency modulated waves (sine,square,sawtooth,harmonic) + files as np.arrays
   - [ ] adding Sounds together/global np.array
   - [ ] my task now: Realtime playing
   - [ ] louder/quieter/fade in/out/splice/echo/delay/speed change/pitch shift (important for other stuff)
