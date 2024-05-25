@@ -1,4 +1,5 @@
 from io_functions import read_midi,read_wav,debug_play_np_array
+from midi_grid.main_tab import TabBody
 import pygame
 import pygame_gui
 from pygame_gui.elements import UIButton, UIImage
@@ -34,6 +35,7 @@ class Mainwindow:
         self.is_running = True
 
     def run(self):
+        tab = TabBody(self)
         while self.is_running:
             time_delta = self.clock.tick(60) / 1000.0
             for event in pygame.event.get():
@@ -65,6 +67,8 @@ class Mainwindow:
             self.ui_manager.update(time_delta)
 
             self.window_surface.blit(self.background, (0, 0))
+            tab.ui(self.window_surface)
+            tab.event(event)
             self.ui_manager.draw_ui(self.window_surface)
 
             pygame.display.update()
