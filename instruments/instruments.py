@@ -1,6 +1,15 @@
 import math
 import numpy as np
 import librosa
+from scipy import signal
+
+ba_rate,ba_data = read_wav("test_files/ba.wav")
+BASE_INSTRUMENTS={
+    "Sine":Instrument_func(np.sin,base_freq = 440,sample_rate = 44100),
+    "Square":Instrument_func(np.square,base_freq = 440,sample_rate = 44100),
+    "Sawtooth":Instrument_func(np.sawtooth,base_freq = 440,sample_rate = 44100),
+    "Ba":Instrument_nparray(ba_data,base_freq=123,sample_rate=ba_rate)
+}
 
 class Instrument_nparray:
     base_freq = 440 #in Hz
