@@ -9,7 +9,7 @@ RECT_WIDTH = 1720
 RECT_HEIGHT = 880
 
 class TabBody:
-    def __init__(self, parent, midi_object):
+    def __init__(self, parent, midi_object = None):
         self.parent = parent
 
         self.midi = midi_object
