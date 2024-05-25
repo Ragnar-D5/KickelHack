@@ -11,6 +11,7 @@ import instruments
 import play_midi
 import effects
 import numpy as np
+import scipy
 from matplotlib import pyplot
 
 class Mainwindow:
@@ -128,8 +129,8 @@ if __name__ == "__main__":
     #pyplot.plot(test.data,"-b")
     #pyplot.show()
     #test.data = test.pitch_shift(440)
-    
-    debug_play_np_array(effects.echo(data[50000:150000],delay=0.5,scale=0.5,amount=10),rate)
+    #debug_play_np_array(effects.echo(data[50000:150000],delay=0.5,scale=0.5,amount=10),rate)
+    debug_play_np_array(effects.resample(data[50000:150000],44100,2000))
     #debug_play_np_array(effects.pitch_shift(data[50000:150000],pitch=2.0),rate)
     #debug_play_np_array(effects.white_noise()*play_midi.INT16_LIMIT,rate)
     print(midi.time_to_tick(1))
