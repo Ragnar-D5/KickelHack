@@ -17,10 +17,11 @@ class MidiTabBody:
 
         midi = read_midi("test_files/TOUHOU_-_Bad_Apple.mid")
         self.midi = midi
-        if self.midi is not None:
-            print("midi: ", self.midi.get_piano_roll())
+#         if self.midi is not None:
+#             print("midi: ", self.midi.get_piano_roll())
         self.instrument = self.midi.instruments[0]
         self.bpm = self.midi.estimate_tempo()
+        print(self.bpm)
 
         self.absolute_offset = [0,0]
         self.previous_position = (0,0)
@@ -43,7 +44,7 @@ class MidiTabBody:
         beats_since_start = -self.absolute_offset[0] / 66
         time_since_start = beats_since_start / self.bpm # in Minuten
 
-        print("----------------------------")
+        #print("----------------------------")
         for note in self.instrument.notes:
             # Zeit sei Beginn in Minuten
             note_start = note.start / 60
