@@ -31,6 +31,13 @@ class Mainwindow:
                                              'right': 'right',
                                              'top': 'bottom',
                                              'bottom': 'bottom'})
+        self.close_button = UIButton(relative_rect=pygame.Rect(-25,0,25,25),
+                                    text='X',
+                                    manager=self.ui_manager,
+                                    anchors={'left': 'right',
+                                             'right': 'right',
+                                             'top': 'bottom',
+                                             'top': 'top'})
 
         self.file_dialog = None
 
@@ -58,6 +65,8 @@ class Mainwindow:
                     self.active_tab = 1
                 elif event.ui_element == self.instrument_button:
                     self.active_tab = 2
+                elif event.ui_element == self.close_button:
+                    self.is_running = False
 
             if event.type == pygame.QUIT:
                 self.is_running = False
@@ -113,6 +122,7 @@ class Mainwindow:
             self.ui_manager.draw_ui(self.window_surface)
 
             pygame.display.update()
+        pygame.quit()
 
 if __name__ == "__main__":
     midi = read_midi("test_files/TOUHOU_-_Bad_Apple.mid")
@@ -130,7 +140,7 @@ if __name__ == "__main__":
     #pyplot.show()
     #test.data = test.pitch_shift(440)
     #debug_play_np_array(effects.echo(data[50000:150000],delay=0.5,scale=0.5,amount=10),rate)
-    debug_play_np_array(effects.resample(data[50000:150000],44100,2000))
+    #debug_play_np_array(effects.resample(data[50000:150000],44100,2000))
     #debug_play_np_array(effects.pitch_shift(data[50000:150000],pitch=2.0),rate)
     #debug_play_np_array(effects.white_noise()*play_midi.INT16_LIMIT,rate)
     print(midi.time_to_tick(1))
