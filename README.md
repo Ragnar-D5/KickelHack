@@ -52,7 +52,7 @@ install all requirements:
   - [ ] my task now: Realtime playing
   - [x] louder/quieter/fade in/out/splice/echo/delay/speed change/pitch shift (important for other stuff)
   - [ ] optional: fluid pitch shift
-  - [ ] arpeggio/noise gen
+  - [x] noise gen
   - [ ] optional: downsampling/vocoder
   - [ ] optional: extra special effects
   - [ ] bandwidth reduction/modulation (maybe by code, cause dragging bezier is a pain and cringe)

@@ -2,6 +2,8 @@ import numpy as np
 import librosa
 from math import log2
 
+import play_midi
+
 def volume(np_array,dB=0):#increase/decrease volume by dB dezibells
     return np_array*(10**(dB/10))
 
@@ -46,3 +48,6 @@ def speed_change(np_array,speed=1.0):
 
 def pitch_shift(np_array,rate=44100,pitch=1.0):
         return np.transpose(librosa.effects.pitch_shift(y=np.transpose(np_array).astype(float),sr=rate,n_steps=log2(pitch)*12.0,bins_per_octave=12)).astype(np.short)
+    
+def white_noise(rate=44100,t=1,ampl=play_midi.INT16_LIMIT):
+    return np.random.rand(rate*t)*ampl
