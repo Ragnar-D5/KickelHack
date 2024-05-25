@@ -1,5 +1,7 @@
 from io_functions import read_midi,read_wav,debug_play_np_array
-from midi_grid.main_tab import TabBody
+from midi.midi_tab import MidiTabBody
+from arangement.arangement_tab import ArangementTabBody
+from instruments.instrument_tab import InstrumentTabBody
 import pygame
 import pygame_gui
 from pygame_gui.elements import UIButton, UIImage
@@ -35,7 +37,11 @@ class Mainwindow:
         self.is_running = True
 
     def run(self):
-        tab = TabBody(self)
+        midi_tab = MidiTabBody(self)
+        arangement_tab = ArangementTabBody(self)
+        instrument_tab = InstrumentTabBody(self)
+
+        active_tab = 1
         while self.is_running:
             time_delta = self.clock.tick(60) / 1000.0
             for event in pygame.event.get():
@@ -62,13 +68,25 @@ class Mainwindow:
                     self.load_button.enable()
                     self.file_dialog = None
 
+                if active_tab == 0:
+                    arangement_tab.event()
+                elif active_tab == 1:
+                    midi_tab.event(event)
+                elif active_tab == 2:
+                    instrument_tab.event(event)
+
                 self.ui_manager.process_events(event)
 
             self.ui_manager.update(time_delta)
-
             self.window_surface.blit(self.background, (0, 0))
-            tab.ui(self.window_surface)
-            tab.event(event)
+
+            if active_tab == 0:
+                arangement_tab.ui()
+            elif active_tab == 1:
+                midi_tab.ui(self.window_surface)
+            elif active_tab == 2:
+                instrument_tab.ui()
+
             self.ui_manager.draw_ui(self.window_surface)
 
             pygame.display.update()
