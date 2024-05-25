@@ -50,7 +50,7 @@ install all requirements:
   - [x] Generate frequency modulated waves (sine,square,sawtooth,harmonic) + files as np.arrays
   - [x] adding Sounds together/global np.array
   - [ ] my task now: Realtime playing
-  - [ ] louder/quieter/fade in/out/splice/echo/delay/speed change/pitch shift (important for other stuff)
+  - [x] louder/quieter/fade in/out/splice/echo/delay/speed change/pitch shift (important for other stuff)
   - [ ] optional: fluid pitch shift
   - [ ] arpeggio/noise gen
   - [ ] optional: downsampling/vocoder

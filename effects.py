@@ -1,4 +1,6 @@
 import numpy as np
+import librosa
+from math import log2
 
 def volume(np_array,dB=0):#increase/decrease volume by dB dezibells
     return np_array*(10**(dB/10))
@@ -39,3 +41,8 @@ def echo(np_array,rate=44100,delay=1,scale=0.0,amount=0,fade=True,fade_out_time=
         scaled_array = scale*scaled_array
     return out
 
+def speed_change(np_array,speed=1.0):
+    return np.transpose(librosa.effects.time_stretch(y=np.transpose(np_array.astype(float)),rate=speed)).astype(np.short)
+
+def pitch_shift(np_array,rate=44100,pitch=1.0):
+        return np.transpose(librosa.effects.pitch_shift(y=np.transpose(np_array).astype(float),sr=rate,n_steps=log2(pitch)*12.0,bins_per_octave=12)).astype(np.short)
