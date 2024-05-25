@@ -5,6 +5,9 @@ from pygame_gui.elements import UIButton, UIImage
 from pygame_gui.windows import UIFileDialog
 from pygame_gui.core.utility import create_resource_path
 import instruments
+import play_midi
+import numpy as np
+from matplotlib import pyplot
 
 class Mainwindow:
     def __init__(self):
@@ -70,10 +73,17 @@ class Mainwindow:
             pygame.display.update()
 
 if __name__ == "__main__":
-    print(read_midi("test_files/TOUHOU_-_Bad_Apple.mid").instruments)
+    midi = read_midi("test_files/TOUHOU_-_Bad_Apple.mid")
     rate,data = read_wav("test_files/never_gonna_test.wav")
-    test = instruments.Instrument(data[50000:100000])
-    debug_play_np_array(test.pitch_shift(220),rate)
+    #test = instruments.Instrument(data[95000:100000])
+    #test = instruments.Instrument(np.sin(np.linspace(0,6.28*100.0,10000))*INT16_LIMIT)
+    #pyplot.plot(test.data)
+    #pyplot.show()
+    #print(test.data)
+    #debug_play_np_array(test.data,rate)
+    #synth = midi.synthesize(wave=(lambda x: np.take(test.data,np.remainder(np.round(44100*x).astype(int),test.data.shape[0]))))*INT16_LIMIT
+    #synth = midi.synthesize(wave = np.sin)*INT16_LIMIT
+    debug_play_np_array(play_midi.midi_play_sawtooth(midi),44100)
 
     window_surface = pygame.display.set_mode(flags=pygame.FULLSCREEN)
     print(window_surface.get_rect())

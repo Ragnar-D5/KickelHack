@@ -13,6 +13,9 @@ class Instrument:
     def load_from_json(self,path): #TODO: optional cause hardcoding
         pass
     
-    def pitch_shift(self,to_freq): #TODO: fix
-        #pitch_shift returns half the sample_rate for some reason, stereo issue?
-        return np.transpose(librosa.effects.pitch_shift(y=np.transpose(self.data).astype(float),sr=self.sample_rate,n_steps=math.log2(to_freq/self.base_freq)*12.0,bins_per_octave=12)).astype(np.short)
+#     def pitch_shift(self,to_freq): #TODO: fix
+#         #pitch_shift returns half the sample_rate for some reason, stereo issue?
+#         return np.transpose(librosa.effects.pitch_shift(y=np.transpose(self.data).astype(float),sr=self.sample_rate,n_steps=math.log2(to_freq/self.base_freq)*12.0,bins_per_octave=12)).astype(np.short)
+    
+    def wave_func(self,x): #TODO: implement
+        return 0
