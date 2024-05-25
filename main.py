@@ -90,8 +90,10 @@ if __name__ == "__main__":
     #pyplot.plot(test.data,"-b")
     #pyplot.show()
     #test.data = test.pitch_shift(440)
-    #debug_play_np_array(effects.echo(data[50000:150000],delay=0.5,scale=0.5,amount=10),rate)
-    debug_play_np_array(effects.pitch_shift(data[50000:150000],pitch=2.0),rate)
+    
+    debug_play_np_array(effects.echo(data[50000:150000],delay=0.5,scale=0.5,amount=10),rate)
+    #debug_play_np_array(effects.pitch_shift(data[50000:150000],pitch=2.0),rate)
+    #debug_play_np_array(effects.white_noise()*play_midi.INT16_LIMIT,rate)
     print(midi.time_to_tick(1))
     #synth = midi.synthesize(fs=44100,wave=test.wave_func)*play_midi.INT16_LIMIT
     #debug_play_np_array(synth+effects.volume(midi.synthesize(wave = np.sin)*play_midi.INT16_LIMIT,0),44100)
