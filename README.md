@@ -37,7 +37,7 @@ install all requirements:
   - [ ] optional: save/open/etc.
   - [ ] optional: record play with keys link piano
 - [ ] Instrument:
-  - [ ] optional: save instrument-setting (json idk)
+  - [ ] save/open instrument-setting (json idk, or do similar with hardcoding ig)
 - [ ] optional: Setting
 - [ ] nvm mainly your task now: complete GUI
 
