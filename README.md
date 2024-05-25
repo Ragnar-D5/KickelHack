@@ -53,12 +53,13 @@ install all requirements:
   - [ ] louder/quieter/fade in/out/splice/echo/delay/speed change/pitch shift (important for other stuff)
   - [ ] optional: fluid pitch shift
   - [ ] arpeggio/noise gen
-  - [ ] downsampling/vocoder
+  - [ ] optional: downsampling/vocoder
   - [ ] optional: extra special effects
   - [ ] bandwidth reduction/modulation (maybe by code, cause dragging bezier is a pain and cringe)
   - [ ] optional: custom fades (maybe by code, cause dragging bezier is a pain and cringe)
 - [ ] Instrument-Synthesis
   - [ ] smol custom sound palette (like 4 or 5) with frequency vectors
+  - [ ] Envelope - ADSR (i forgor)
   - [ ] play midi with custom sounds
   - [ ] handle percussion seperatly (its easier i hope)
 
