@@ -53,9 +53,9 @@ install all requirements:
   - [x] louder/quieter/fade in/out/splice/echo/delay/speed change/pitch shift (important for other stuff)
   - [ ] optional: fluid pitch shift
   - [x] noise gen
-  - [ ] optional: downsampling/vocoder
+  - [x] optional: downsampling
   - [ ] optional: extra special effects
-  - [ ] bandwidth reduction/modulation (maybe by code, cause dragging bezier is a pain and cringe)
+  - [ ] bandwidth reduction/modulation/vocoder (maybe by code, cause dragging bezier is a pain and cringe)
   - [ ] optional: custom fades (maybe by code, cause dragging bezier is a pain and cringe)
 - [ ] Instrument-Synthesis
   - [ ] smol custom sound palette (like 4 or 5) with frequency vectors

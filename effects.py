@@ -51,3 +51,6 @@ def pitch_shift(np_array,rate=44100,pitch=1.0):
     
 def white_noise(rate=44100,t=1,ampl=play_midi.INT16_LIMIT):
     return np.random.rand(rate*t)*ampl
+
+def resample(np_array,rate=44100,to_rate=44100):
+    return play_midi.signal.resample(play_midi.signal.resample(np_array,round(np_array.shape[0]*to_rate/rate)),np_array.shape[0])
