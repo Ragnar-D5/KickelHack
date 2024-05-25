@@ -4,7 +4,7 @@ import pygame_gui
 from pygame_gui.elements import UIButton, UIImage
 from pygame_gui.windows import UIFileDialog
 from pygame_gui.core.utility import create_resource_path
-
+import instruments
 
 class Mainwindow:
     def __init__(self):
@@ -70,9 +70,10 @@ class Mainwindow:
             pygame.display.update()
 
 if __name__ == "__main__":
-    # print(read_midi("test_files/TOUHOU_-_Bad_Apple.mid").instruments)
-    # rate,data = read_wav("test_files/never_gonna_test.wav")
-    # debug_play_np_array(data,rate)
+    print(read_midi("test_files/TOUHOU_-_Bad_Apple.mid").instruments)
+    rate,data = read_wav("test_files/never_gonna_test.wav")
+    test = instruments.Instrument(data[50000:100000])
+    debug_play_np_array(test.pitch_shift(220),rate)
 
     window_surface = pygame.display.set_mode(flags=pygame.FULLSCREEN)
     print(window_surface.get_rect())

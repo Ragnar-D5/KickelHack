@@ -2,6 +2,7 @@ from scipy.io import wavfile
 from pathlib import Path
 import pretty_midi
 import pyaudio
+import numpy as np
 
 def read_wav(path):
     return wavfile.read(path)
