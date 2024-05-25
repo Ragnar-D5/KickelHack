@@ -74,16 +74,23 @@ class Mainwindow:
 
 if __name__ == "__main__":
     midi = read_midi("test_files/TOUHOU_-_Bad_Apple.mid")
-    rate,data = read_wav("test_files/never_gonna_test.wav")
-    #test = instruments.Instrument(data[95000:100000])
-    #test = instruments.Instrument(np.sin(np.linspace(0,6.28*100.0,10000))*INT16_LIMIT)
-    #pyplot.plot(test.data)
+    rate,data = read_wav("test_files/ba.wav")
+    test = instruments.Instrument(data,base_freq=123)
+    #test = instruments.Instrument(np.sin(np.linspace(0,6.28*100,10000))*play_midi.INT16_LIMIT)
+    #pyplot.plot(np.linspace(0,6.28*100,10000),np.sin(np.linspace(0,6.28*100,10000)),"-g")
+    #pyplot.plot(np.linspace(0,6.28*100,10000),(lambda x: np.take(test.data,np.remainder(np.floor(15.923*x).astype(np.int16),test.data.shape[0])))(np.linspace(0,6.28*100,10000)),"-r")
     #pyplot.show()
     #print(test.data)
-    #debug_play_np_array(test.data,rate)
-    #synth = midi.synthesize(wave=(lambda x: np.take(test.data,np.remainder(np.round(44100*x).astype(int),test.data.shape[0]))))*INT16_LIMIT
+    #pyplot.plot(test.wave_func((np.linspace(0,1.0))),"-r")
+    #pyplot.plot(test.data,"-b")
+    #pyplot.show()
+    test.data = test.pitch_shift(440)
+    debug_play_np_array(test.data,rate)
+    print(midi.time_to_tick(1))
+    synth = midi.synthesize(fs=44100,wave=test.wave_func)*play_midi.INT16_LIMIT
+    debug_play_np_array(synth+midi.synthesize(wave = np.sin)*play_midi.INT16_LIMIT,44100)
     #synth = midi.synthesize(wave = np.sin)*INT16_LIMIT
-    debug_play_np_array(play_midi.midi_play_harmonic(midi,[1,0.5,0.25,0.125,0.0625]),44100)
+    #debug_play_np_array(play_midi.midi_play_harmonic(midi,[1,0.5,0.25,0.125,0.0625]),44100)
 
     window_surface = pygame.display.set_mode(flags=pygame.FULLSCREEN)
     print(window_surface.get_rect())
