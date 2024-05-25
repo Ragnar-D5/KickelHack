@@ -70,8 +70,8 @@ class Mainwindow:
             pygame.display.update()
 
 if __name__ == "__main__":
-    print(read_midi("test_files/TOUHOU_-_Bad_Apple.mid").instruments)
-    rate,data = read_wav("test_files/never_gonna_test.wav")
+    # print(read_midi("test_files/TOUHOU_-_Bad_Apple.mid").instruments)
+    # rate,data = read_wav("test_files/never_gonna_test.wav")
     # debug_play_np_array(data,rate)
 
     window_surface = pygame.display.set_mode(flags=pygame.FULLSCREEN)
