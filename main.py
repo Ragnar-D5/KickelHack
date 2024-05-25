@@ -9,6 +9,7 @@ from pygame_gui.windows import UIFileDialog
 from pygame_gui.core.utility import create_resource_path
 import instruments
 import play_midi
+import effects
 import numpy as np
 from matplotlib import pyplot
 
@@ -16,14 +17,12 @@ class Mainwindow:
     def __init__(self):
         pygame.init()
 
-        pygame.display.set_caption('Basic Synthesizer')
+        pygame.display.set_caption('Benzaiten')
         self.window_surface = pygame.display.set_mode(size=(0,0), flags=pygame.FULLSCREEN)
         _, _, w, h = self.window_surface.get_rect()
         self.ui_manager = pygame_gui.UIManager(window_resolution=(w, h))
-
         self.background = pygame.Surface(size=(w, h), flags=pygame.FULLSCREEN)
         self.background.fill(self.ui_manager.ui_theme.get_colour('dark_bg'))
-
         self.load_button = UIButton(relative_rect=pygame.Rect(-180, -60, 150, 30),
                                     text='Load File',
                                     manager=self.ui_manager,
@@ -96,8 +95,9 @@ class Mainwindow:
 
 if __name__ == "__main__":
     midi = read_midi("test_files/TOUHOU_-_Bad_Apple.mid")
-    rate,data = read_wav("test_files/ba.wav")
-    test = instruments.Instrument_nparray(data,base_freq=123)
+    rate,data = read_wav("test_files/never_gonna_test.wav")
+    #rate,data = read_wav("test_files/ba.wav")
+    #test = instruments.Instrument_nparray(data,base_freq=123)
     #test = instruments.Instrument_func(func=np.sin,base_freq=123)
     #test = instruments.Instrument(np.sin(np.linspace(0,6.28*100,10000))*play_midi.INT16_LIMIT)
     #pyplot.plot(np.linspace(0,6.28*100,10000),np.sin(np.linspace(0,6.28*100,10000)),"-g")
@@ -108,10 +108,10 @@ if __name__ == "__main__":
     #pyplot.plot(test.data,"-b")
     #pyplot.show()
     #test.data = test.pitch_shift(440)
-    #debug_play_np_array(test.data,rate)
+    debug_play_np_array(effects.echo(data[50000:150000],delay=0.5,scale=0.5,amount=10),rate)
     print(midi.time_to_tick(1))
-    synth = midi.synthesize(fs=44100,wave=test.wave_func)*play_midi.INT16_LIMIT
-    debug_play_np_array(synth+midi.synthesize(wave = np.sin)*play_midi.INT16_LIMIT,44100)
+    #synth = midi.synthesize(fs=44100,wave=test.wave_func)*play_midi.INT16_LIMIT
+    #debug_play_np_array(synth+effects.volume(midi.synthesize(wave = np.sin)*play_midi.INT16_LIMIT,0),44100)
     #synth = midi.synthesize(wave = np.sin)*INT16_LIMIT
     #debug_play_np_array(play_midi.midi_play_harmonic(midi,[1,0.5,0.25,0.125,0.0625]),44100)
 
