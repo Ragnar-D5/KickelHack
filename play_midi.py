@@ -12,3 +12,9 @@ def midi_play_square(midi):
 
 def midi_play_sawtooth(midi):
     return midi.synthesize(wave = signal.sawtooth)*INT16_LIMIT
+
+def midi_play_harmonic(midi,freq = [1]):
+    out = freq[0]*midi.synthesize(wave = np.sin)*INT16_LIMIT
+    for i in range(1,len(freq)):
+        out += freq[i]*midi.synthesize(wave = (lambda x: np.sin((i+1)*x)))*INT16_LIMIT
+    return out

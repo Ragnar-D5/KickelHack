@@ -83,7 +83,7 @@ if __name__ == "__main__":
     #debug_play_np_array(test.data,rate)
     #synth = midi.synthesize(wave=(lambda x: np.take(test.data,np.remainder(np.round(44100*x).astype(int),test.data.shape[0]))))*INT16_LIMIT
     #synth = midi.synthesize(wave = np.sin)*INT16_LIMIT
-    debug_play_np_array(play_midi.midi_play_sawtooth(midi),44100)
+    debug_play_np_array(play_midi.midi_play_harmonic(midi,[1,0.5,0.25,0.125,0.0625]),44100)
 
     window_surface = pygame.display.set_mode(flags=pygame.FULLSCREEN)
     print(window_surface.get_rect())
