@@ -75,6 +75,7 @@ class Mainwindow:
             self.ui_manager.process_events(event)
 
     def run(self):
+        #tabsystem
         self.midi_tab = MidiTabBody(self)
         self.arangement_tab = ArangementTabBody(self)
         self.instrument_tab = InstrumentTabBody(self)
