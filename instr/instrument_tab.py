@@ -37,8 +37,8 @@ class InstrumentTabBody():
         
         self.base_func = np.sin
     
-        self.Xarray = np.linspace(0, np.pi/220, 100)
-        self.Yarray = np.linspace(0, 99, 100)
+        self.Xarray = np.linspace(0, np.pi, 1000)
+        self.Yarray = np.linspace(0, 99, 1000)
     def comp_func(self,x):
         out = 0
         for i in range(AMOUNT_SLIDERS):
