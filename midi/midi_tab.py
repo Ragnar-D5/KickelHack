@@ -81,6 +81,7 @@ class MidiTabBody:
                         pitch = note,
                         start = time_step*60/self.bpm,
                         end = (time_step+1)*60/self.bpm))
+        self.midi.instruments.append(self.instrument)
         self.midi.write(path)
                 
     
@@ -162,7 +163,7 @@ class MidiTabBody:
                 pg.draw.line(screen, pg.Color("black"), point3, point4)
             if pg.font:
                 font = pg.font.Font(None, 32)
-                note = font.render(str(current_note//OCTAVE+8)+KEYS[current_note % OCTAVE], True, (0, 0, 0))
+                note = font.render(str(-current_note//OCTAVE)+KEYS[-current_note % OCTAVE], True, (0, 0, 0))
                 screen.blit(note,(RECT_X_OFFSET-50,RECT_Y_OFFSET + vertical_offset + i * 33))
         
         #draw rectangle ontop everything else

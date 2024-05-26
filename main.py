@@ -13,17 +13,17 @@ import effects
 import numpy as np
 from scipy import signal
 from matplotlib import pyplot
-
-ba_rate,ba_data = read_wav("test_files/ba.wav")
-BASE_INSTRUMENTS={
-    "Sine":instr.instruments.Instrument_func(np.sin,base_freq = 440,sample_rate = 44100),
-    "Square":instr.instruments.Instrument_func(signal.square,base_freq = 440,sample_rate = 44100),
-    "Sawtooth":instr.instruments.Instrument_func(signal.sawtooth,base_freq = 440,sample_rate = 44100),
-    "Ba":instr.instruments.Instrument_nparray(ba_data,base_freq=123,sample_rate=ba_rate)
-}
+import sounddevice as sd
 
 class Mainwindow:
     def __init__(self):
+        ba_rate,ba_data = read_wav("test_files/ba.wav")
+        self.base_Instruments={
+            "Sine":instr.instruments.Instrument_func(np.sin,base_freq = 440,sample_rate = 44100),
+            "Square":instr.instruments.Instrument_func(signal.square,base_freq = 440,sample_rate = 44100),
+            "Sawtooth":instr.instruments.Instrument_func(signal.sawtooth,base_freq = 440,sample_rate = 44100),
+            "Ba":instr.instruments.Instrument_nparray(ba_data,base_freq=123,sample_rate=ba_rate)
+        }
         pygame.init()
 
         pygame.display.set_caption('Benzaiten')
@@ -71,6 +71,7 @@ class Mainwindow:
                     self.midi_tab.load_button.visible = False
                 elif event.ui_element == self.close_button:
                     self.is_running = False
+                    sd.stop()
 
             if event.type == pygame.QUIT:
                 self.is_running = False
@@ -122,6 +123,7 @@ class Mainwindow:
         pygame.quit()
     
     def get_midi_block(self): #get current midiprogress as block
+        #debug_play_np_array(self.midi_tab.synth())
         return self.midi_tab.synth()
         #midi_tab.reset()
     
@@ -129,7 +131,7 @@ class Mainwindow:
     
 if __name__ == "__main__":
     #midi = read_midi("midi.mid")
-    rate,data = read_wav("test_files/never_gonna_test.wav")
+    #rate,data = read_wav("test_files/never_gonna_test.wav")
     #rate,data = read_wav("test_files/ba.wav")
     #test = instruments.Instrument_nparray(data,base_freq=123)
     #test = instruments.Instrument_func(func=np.sin,base_freq=123)
