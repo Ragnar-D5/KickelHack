@@ -154,17 +154,18 @@ class MidiTabBody:
             if event.button == 1: #make note with left mouse button
                 time_step = (event.pos[0] - self.absolute_offset[0] - RECT_X_OFFSET)//66
                 note = (event.pos[1] - self.absolute_offset[1] - RECT_Y_OFFSET)//33
-                if len(self.notes) <= time_step:
-                    self.notes.extend([0]*(time_step-len(self.notes)))
-                    self.notes.append([note])
-                elif self.notes[time_step] == 0:
-                    self.notes[time_step] = [note]
-                else:
-                    self.notes[time_step] += [note]
+                if time_step >= 0:
+                    if len(self.notes) <= time_step:
+                        self.notes.extend([0]*(time_step-len(self.notes)))
+                        self.notes.append([note])
+                    elif self.notes[time_step] == 0:
+                        self.notes[time_step] = [note]
+                    elif not note in self.notes[time_step]:
+                        self.notes[time_step] += [note]
             elif event.button == 3: #delete note with right mouse button
                 time_step = (event.pos[0] - self.absolute_offset[0] - RECT_X_OFFSET)//66
                 note = (event.pos[1] - self.absolute_offset[1] - RECT_Y_OFFSET)//33
-                if len(self.notes) > time_step:
+                if len(self.notes) > time_step and time_step >=0:
                     if self.notes[time_step] != 0:
                         if note == self.notes[time_step]:
                             self.notes[time_step] = 0
