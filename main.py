@@ -49,7 +49,12 @@ class Mainwindow:
         self.midi_button = UIButton(pygame.Rect(100,0,100,25),"Midi", self.ui_manager)
         self.instrument_button = UIButton(pygame.Rect(200,0,100,25),"Instruments", self.ui_manager)
 
-
+        self.base_instruments = {
+            "Sine":instr.instruments.Instrument_func(np.sin,base_freq = 440,sample_rate = 44100),
+            "Square":instr.instruments.Instrument_func(signal.square,base_freq = 440,sample_rate = 44100),
+            "Sawtooth":instr.instruments.Instrument_func(signal.sawtooth,base_freq = 440,sample_rate = 44100),
+            "Ba":instr.instruments.Instrument_nparray(ba_data,base_freq=123,sample_rate=ba_rate)
+        }
         # self.slider = UIHorizontalSlider(pygame.Rect((0,0),(300, 25)),25.0, (0.0,100.0), self.ui_manager, object_id="heheha")
 
 
