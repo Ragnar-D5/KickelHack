@@ -1,6 +1,6 @@
 import pygame as pg
 import matplotlib
-import instruments
+import instr.instruments
 import numpy as np
 import custom_pygame_objects
 

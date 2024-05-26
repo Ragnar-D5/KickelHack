@@ -4,8 +4,10 @@ import pygame_gui
 from pygame_gui.elements import UIButton
 from pygame_gui.windows import UIFileDialog
 import play_midi
+import pretty_midi
 import numpy as np
 from io_functions import read_midi,read_wav,debug_play_np_array
+import instr.instruments
 
 BASE_BPM = 120
 BASE_TACT = 4
@@ -40,7 +42,8 @@ class MidiTabBody:
         self.midi = None #read_midi("test_files/TOUHOU_-_Bad_Apple.mid")
         self.instrument = None
         self.bpm = BASE_BPM
-
+        self.play_instrument = instr.instruments.Instrument_func()
+        
         self.absolute_offset = [0,-1000]
         self.previous_position = (0,0)
         
@@ -64,6 +67,28 @@ class MidiTabBody:
         self.absolute_offset = [0,-1000]
         self.previous_position = (0,0)
     
+    def to_midi(self,path="temp.mid"):#fill self.midi with self.notes
+        self.midi = pretty_midi.PrettyMIDI()
+        instrument_program = pretty_midi.instrument_name_to_program('Acoustic Grand Piano')
+        self.instrument = pretty_midi.Instrument(program=instrument_program)
+        for time_step in range(len(self.notes)):
+            if hasattr(self.notes[time_step], "__len__"):
+                for note in self.notes[time_step]:
+                    self.instrument.notes.append(pretty_midi.Note(
+                        velocity=64,
+                        pitch = note,
+                        start = time_step*60/self.bpm,
+                        end = (time_step+1)*60/self.bpm))
+        self.midi.write(path)
+                
+    
+    def synth(self):
+        if self.midi != None:
+            return self.midi.synthesize(fs=self.play_instrument.sample_rate,wave=self.play_instrument.wave_func)*play_midi.INT16_LIMIT
+        else:
+            self.to_midi()
+            return self.midi.synthesize(fs=self.play_instrument.sample_rate,wave=self.play_instrument.wave_func)*play_midi.INT16_LIMIT
+    
     def load_midi(self,midi):
         self.midi = midi
         self.instrument = self.midi.instruments[0]
@@ -72,7 +97,7 @@ class MidiTabBody:
         for note in self.instrument.notes:
             note_start = note.start / 60
             note_end = note.end/ 60
-            for i in range(round(note_start*self.bpm),round(note_end*self.bpm)):
+            for i in range(round(note_start*self.bpm),round(note_end*self.bpm)):#notes longer than one beat aren't currently implemented
                 if self.notes[i] == 0:
                     self.notes[i] = [note.pitch]
                 else:
@@ -190,7 +215,7 @@ class MidiTabBody:
                                             # initial_file_path='',
                                             # allow_picking_directories=True,
                                             allow_existing_files_only=True,
-                                            allowed_suffixes={""})
+                                            allowed_suffixes={".mid"})
             self.load_button.disable()
 
         if (event.type == pygame_gui.UI_WINDOW_CLOSE
@@ -199,5 +224,4 @@ class MidiTabBody:
                 self.file_dialog = None
         
         if event.type == pygame_gui.UI_FILE_DIALOG_PATH_PICKED:
-                if self.display_loaded_image is not None:
-                    self.display_loaded_image.kill()
+                self.load_midi(read_midi(event.text))

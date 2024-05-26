@@ -1,18 +1,26 @@
 from io_functions import read_midi,read_wav,debug_play_np_array
 from midi.midi_tab import MidiTabBody
 from arangement.arangement_tab import ArangementTabBody
-from instruments.instrument_tab import InstrumentTabBody
+from instr.instrument_tab import InstrumentTabBody
 import pygame
 import pygame_gui
 from pygame_gui.elements import UIButton, UIImage, UIHorizontalSlider
 from pygame_gui.windows import UIFileDialog
 from pygame_gui.core.utility import create_resource_path
-import instruments
+import instr.instruments
 import play_midi
 import effects
 import numpy as np
-import scipy
+from scipy import signal
 from matplotlib import pyplot
+
+ba_rate,ba_data = read_wav("test_files/ba.wav")
+BASE_INSTRUMENTS={
+    "Sine":instr.instruments.Instrument_func(np.sin,base_freq = 440,sample_rate = 44100),
+    "Square":instr.instruments.Instrument_func(signal.square,base_freq = 440,sample_rate = 44100),
+    "Sawtooth":instr.instruments.Instrument_func(signal.sawtooth,base_freq = 440,sample_rate = 44100),
+    "Ba":instr.instruments.Instrument_nparray(ba_data,base_freq=123,sample_rate=ba_rate)
+}
 
 class Mainwindow:
     def __init__(self):
@@ -112,9 +120,15 @@ class Mainwindow:
 
             pygame.display.update()
         pygame.quit()
-
+    
+    def get_midi_block(self): #get current midiprogress as block
+        return self.midi_tab.synth()
+        #midi_tab.reset()
+    
+    
+    
 if __name__ == "__main__":
-    midi = read_midi("test_files/TOUHOU_-_Bad_Apple.mid")
+    #midi = read_midi("midi.mid")
     rate,data = read_wav("test_files/never_gonna_test.wav")
     #rate,data = read_wav("test_files/ba.wav")
     #test = instruments.Instrument_nparray(data,base_freq=123)
@@ -133,6 +147,7 @@ if __name__ == "__main__":
     #debug_play_np_array(effects.pitch_shift(data[50000:150000],pitch=2.0),rate)
     #debug_play_np_array(effects.white_noise()*play_midi.INT16_LIMIT,rate)
     print(midi.time_to_tick(1))
+    #debug_play_np_array(play_midi.midi_play_sin(midi)*play_midi.INT16_LIMIT)
     #synth = midi.synthesize(fs=44100,wave=test.wave_func)*play_midi.INT16_LIMIT
     #debug_play_np_array(synth+effects.volume(midi.synthesize(wave = np.sin)*play_midi.INT16_LIMIT,0),44100)
     #synth = midi.synthesize(wave = np.sin)*INT16_LIMIT
