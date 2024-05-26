@@ -8,6 +8,7 @@ import pretty_midi
 import numpy as np
 from io_functions import read_midi,read_wav,debug_play_np_array
 import instr.instruments
+from custom_pygame_objects import DropDown
 
 BASE_BPM = 120
 BASE_TACT = 4
@@ -57,6 +58,7 @@ class MidiTabBody:
                                              'right': 'right',
                                              'top': 'bottom',
                                              'bottom': 'bottom'})
+        self.drop_down = DropDown(parent=self, base_rect=pg.Rect(500,0,200,30),name="drop_down",options=["placeholder_1", "placeholder_2"])
     
     def reset(self):#reset everything
         self.parent = parent
