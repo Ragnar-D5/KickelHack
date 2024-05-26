@@ -2,7 +2,7 @@ import pygame as pg
 from io_functions import read_midi
 import pygame_gui
 from pygame_gui.elements import UIButton
-
+from pygame_gui.windows import UIFileDialog
 import play_midi
 import numpy as np
 from io_functions import read_midi,read_wav,debug_play_np_array
@@ -54,6 +54,15 @@ class MidiTabBody:
                                              'right': 'right',
                                              'top': 'bottom',
                                              'bottom': 'bottom'})
+    
+    def reset(self):#reset everything
+        self.parent = parent
+        self.notes = []
+        self.midi = None
+        self.instrument = None
+        self.bpm = BASE_BPM
+        self.absolute_offset = [0,-1000]
+        self.previous_position = (0,0)
     
     def load_midi(self,midi):
         self.midi = midi
@@ -175,7 +184,7 @@ class MidiTabBody:
 
         if (event.type == pygame_gui.UI_BUTTON_PRESSED and event.ui_element == self.load_button):
             self.file_dialog = UIFileDialog(pg.Rect(160, 50, 440, 500),
-                                            self.ui_manager,
+                                            self.parent.ui_manager,
                                             window_title='Load File',
                                             # initial_file_path='',
                                             # allow_picking_directories=True,

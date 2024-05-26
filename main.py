@@ -46,18 +46,20 @@ class Mainwindow:
 
 
 
-
     def process_events(self):
         for event in pygame.event.get():
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == self.arangement_button:
                     self.active_tab = 0
+                    self.arangement_tab.unhide_buttons()
                     self.midi_tab.load_button.visible = False
                 elif event.ui_element == self.midi_button:
                     self.active_tab = 1
+                    self.arangement_tab.hide_buttons()
                     self.midi_tab.load_button.visible = True
                 elif event.ui_element == self.instrument_button:
                     self.active_tab = 2
+                    self.arangement_tab.hide_buttons()
                     self.midi_tab.load_button.visible = False
                 elif event.ui_element == self.close_button:
                     self.is_running = False
@@ -79,8 +81,20 @@ class Mainwindow:
         self.midi_tab = MidiTabBody(self)
         self.arangement_tab = ArangementTabBody(self)
         self.instrument_tab = InstrumentTabBody(self)
-
+        
         self.active_tab = 1
+        
+        if self.active_tab == 0:
+            self.arangement_tab.unhide_buttons()
+            self.midi_tab.load_button.visible = False
+        elif self.active_tab == 1:
+            self.arangement_tab.hide_buttons()
+            self.midi_tab.load_button.visible = True
+        elif self.active_tab == 2:
+            self.arangement_tab.hide_buttons()
+            self.midi_tab.load_button.visible = False
+            
+        
         while self.is_running:
             time_delta = self.clock.tick(60) / 1000.0
             self.process_events()
@@ -88,7 +102,7 @@ class Mainwindow:
             self.window_surface.blit(self.background, (0, 0))
 
             if self.active_tab == 0:
-                self.arangement_tab.ui()
+                self.arangement_tab.ui(self.window_surface)
             elif self.active_tab == 1:
                 self.midi_tab.ui(self.window_surface)
             elif self.active_tab == 2:
