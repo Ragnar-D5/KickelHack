@@ -86,7 +86,7 @@ class Mainwindow:
             elif self.active_tab == 1:
                 self.midi_tab.event(event)
             elif self.active_tab == 2:
-                self.instrument_tab.event(event, self.window_surface)
+                self.instrument_tab.event(event)
 
             self.ui_manager.process_events(event)
 
@@ -108,13 +108,11 @@ class Mainwindow:
             self.arangement_tab.hide_buttons()
             self.midi_tab.load_button.visible = False
             
-        FPS = 24
-        clock = pygame.time.Clock()
+        
         while self.is_running:
-            # time_delta = self.clock.tick(20) / 1000.0
-            clock.tick(FPS)
+            time_delta = self.clock.tick(60) / 1000.0
             self.process_events()
-            self.ui_manager.update(self.clock.tick(FPS)/1000.0)
+            self.ui_manager.update(time_delta)
             self.window_surface.blit(self.background, (0, 0))
 
             if self.active_tab == 0:

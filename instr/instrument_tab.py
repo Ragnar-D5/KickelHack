@@ -37,14 +37,13 @@ class InstrumentTabBody():
         
         self.base_func = np.sin
     
-        self.Xarray = np.linspace(0, np.pi, 1000)
-        self.Yarray = np.linspace(0, 99, 1000)
+        self.Xarray = np.linspace(0, np.pi/220, 1)
+        self.Yarray = np.linspace(0, 99, 1)
     def comp_func(self,x):
         out = 0
         for i in range(AMOUNT_SLIDERS):
             out += self.vsliders[i].value*self.base_func((i+1)*x)
         return out
-        print(out)
     
     def get_instr(self):
         return instruments.Instrument_func(self.comp_func,base_freq=BASE_FREQ)
@@ -66,7 +65,7 @@ class InstrumentTabBody():
         # Paramétrage:
         ax = fig.gca()
         self.GraphDesign(ax,fig)
-        ax.plot(Xval, Yval, '-',color = CORANGE)
+        ax.plot(Xval, Yval, 'ro-',color = CORANGE)
         canvas = agg.FigureCanvasAgg(fig)
         canvas.draw()
         renderer = canvas.get_renderer()
@@ -86,16 +85,16 @@ class InstrumentTabBody():
             if pg.font:
                 x,y,w,h = self.vsliders[i].rect
                 screen.blit(self.slider_texts[i],(x+w/2-20,y+h+10))
-        self.LivePlot(self.Xarray, self.Yarray, (640,640), (10, 4), screen)
+        # self.LivePlot(self.Xarray, self.Yarray, (640,720), (640, 360), screen)
+        self.LivePlot(self.Xarray, self.Yarray, (0,0), (100,100), screen)
     
-    def event(self, event: pg.event.Event, screen):
+    def event(self, event: pg.event.Event):
         if event.type == pg.MOUSEBUTTONDOWN:
             for i in range(AMOUNT_SLIDERS):
                 if self.vsliders[i].is_colliding(event.pos):
                     self.activ_slider = self.vsliders[i]
                     self.activ_slider.move_slider(event.pos)
                     self.update_Yarray()
-                # self.LivePlot(self.Xarray, self.Yarray, (200,700), (10,4), screen)
         elif event.type == pg.MOUSEBUTTONUP:
             self.activ_slider = None
         
@@ -103,7 +102,6 @@ class InstrumentTabBody():
             if self.activ_slider != None:
                 self.activ_slider.move_slider(event.pos)
                 self.update_Yarray()
-                # self.LivePlot(self.Xarray, self.Yarray, (200,700), (10,4), screen)
             
 class VerticalSlider():
     def __init__(self, parent, base_rect = pg.Rect(0,0,0,0), value = 0.0, value_range = (0.0,1.0), slider_radius = 10):
