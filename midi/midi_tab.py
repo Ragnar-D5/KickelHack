@@ -79,8 +79,6 @@ class MidiTabBody:
                     self.notes[i] += [note.pitch]
     
     def ui(self, screen):
-        pg.draw.rect(screen, pg.Color("black"), pg.Rect(RECT_X_OFFSET, RECT_Y_OFFSET, RECT_WIDTH, RECT_HEIGHT), 3)
-
         horizontal_offset = self.absolute_offset[0] % 66
         vertical_offset = self.absolute_offset[1] % 33
 
@@ -139,6 +137,9 @@ class MidiTabBody:
                 font = pg.font.Font(None, 32)
                 note = font.render(str(current_note//OCTAVE+8)+KEYS[current_note % OCTAVE], True, (0, 0, 0))
                 screen.blit(note,(RECT_X_OFFSET-50,RECT_Y_OFFSET + vertical_offset + i * 33))
+        
+        #draw rectangle ontop everything else
+        pg.draw.rect(screen, pg.Color("black"), pg.Rect(RECT_X_OFFSET, RECT_Y_OFFSET, RECT_WIDTH, RECT_HEIGHT), 3)
 
     def event(self, event: pg.event.Event):
         if event.type == pg.MOUSEMOTION: #drag with middle mouse button
