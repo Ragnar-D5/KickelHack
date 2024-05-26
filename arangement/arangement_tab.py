@@ -109,6 +109,10 @@ class ArangementTabBody():
                     if bl.is_colliding(event.pos):
                         self.active_block = bl
                         self.active_block.move(event.pos)
+            if event.button == 3:
+                for bl in self.blocks:
+                    if bl.is_colliding(event.pos):
+                        self.blocks.remove(bl)
         elif event.type == pg.MOUSEBUTTONUP:
             if self.active_block != None:
                 self.active_block.drop()
@@ -124,6 +128,9 @@ class ArangementTabBody():
                                             allow_existing_files_only=True,
                                             allowed_suffixes={".wav",".mid"})
             self.buttons["load_button"].disable()
+        
+        if (event.type == pygame_gui.UI_BUTTON_PRESSED and event.ui_element == self.buttons["midi_block_button"]):
+            self.blocks += [Block(self,self.parent.get_midi_block(),sample_rate=44100,t=0,ch=-1,text = "Midi"+str(len(self.blocks)))]
         
         if (event.type == pygame_gui.UI_WINDOW_CLOSE
                     and event.ui_element == self.file_dialog):
@@ -155,7 +162,7 @@ class Block():#should be able to store midi, wav and custom music sections
         y = (self.ch-1) * CHANNEL_HEIGHT + self.parent.absolute_offset[1]
         w = (self.data.shape[0]/self.sample_rate)*(RECT_WIDTH/TIMELINE_LENGTH) + min(x,0) + min(RECT_WIDTH-RECT_X_OFFSET-x,0)
         h = CHANNEL_HEIGHT + min(y,0) + min(RECT_HEIGHT-RECT_Y_OFFSET-y,0)
-        rect = pg.Rect(max(x,0)+ RECT_X_OFFSET,max(y,0) + RECT_Y_OFFSET,w,h)
+        rect = pg.Rect(max(x,0)+ RECT_X_OFFSET,max(y,0) + RECT_Y_OFFSET,min(max(w,0),RECT_WIDTH),h)
         pg.draw.rect(screen, pg.Color("cadetblue"), rect, width=0)
         if pg.font:
                 font = pg.font.Font(None, 32)

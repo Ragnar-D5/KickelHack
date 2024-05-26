@@ -1,4 +1,4 @@
-import instruments
+import instr.instruments
 import numpy as np
 from scipy import signal
 
