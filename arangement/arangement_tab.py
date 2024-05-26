@@ -4,6 +4,7 @@ import pygame_gui
 from pygame_gui.elements import UIButton
 from pygame_gui.windows import UIFileDialog
 import numpy as np
+import sounddevice as sd
 
 TIMELINE_LENGTH = 10 #in seconds
 CHANNEL_HEIGHT = 100
@@ -42,6 +43,13 @@ class ArangementTabBody():
                                              'bottom': 'bottom'}),
             "midi_block_button":UIButton(relative_rect=pg.Rect(-180, -100, 150, 30),
                                     text='Midi Block',
+                                    manager=self.parent.ui_manager,
+                                    anchors={'left': 'right',
+                                             'right': 'right',
+                                             'top': 'bottom',
+                                             'bottom': 'bottom'}),
+            "play_sound_button":UIButton(relative_rect=pg.Rect(-180, -100, 150, 30),
+                                    text='Play sound',
                                     manager=self.parent.ui_manager,
                                     anchors={'left': 'right',
                                              'right': 'right',
@@ -128,6 +136,8 @@ class ArangementTabBody():
                                             allow_existing_files_only=True,
                                             allowed_suffixes={".wav",".mid"})
             self.buttons["load_button"].disable()
+        if (event.type == pygame_gui.UI_BUTTON_PRESSED and event.ui_element == self.buttons["play_sound_button"]):
+            sd.play(self.sound, self.sample_rate)
         
         if (event.type == pygame_gui.UI_BUTTON_PRESSED and event.ui_element == self.buttons["midi_block_button"]):
             self.blocks += [Block(self,self.parent.get_midi_block(),sample_rate=44100,t=0,ch=-1,text = "Midi"+str(len(self.blocks)))]
