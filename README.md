@@ -14,10 +14,10 @@ install all requirements:
   - [x] Tabs work (like Bosca Ceoil)
   - [ ] dropdown menus (save,open,import,export file / choose intrument)
 - [ ] Arrangment:
-  - [ ] drag/drop blocks on multiple Timelines (like FL Studio)
+  - [x] drag/drop blocks on multiple Timelines (like FL Studio)
   - [ ] optional: visualize MIDI/WAV-Data (like FL Studio)
 - [ ] Compose:
-  - [ ] place notes to create blocks (like Bosca Ceoil)
+  - [x] place notes to create blocks (like Bosca Ceoil)
   - [x] scrollable Notelines (like Bosca Ceoil)
   - [ ] optional: play with keys link piano
 - [ ] Instrument:
@@ -32,8 +32,8 @@ install all requirements:
 
 - [ ] Import/Export/etc.
   - [x] Import MIDI/WAV
-  - [ ] Export WAV
-  - [ ] optional: Export note-Blocks as MIDI
+  - [x] Export WAV
+  - [x] optional: Export note-Blocks as MIDI
   - [ ] optional: save/open/etc.
   - [ ] optional: record play with keys link piano
 - [ ] Instrument:
@@ -49,7 +49,7 @@ install all requirements:
 - [ ] Base-Synthesis
   - [x] Generate frequency modulated waves (sine,square,sawtooth,harmonic) + files as np.arrays
   - [x] adding Sounds together/global np.array
-  - [ ] my task now: Realtime playing
+  - [x] my task now: Realtime playing
   - [x] louder/quieter/fade in/out/splice/echo/delay/speed change/pitch shift (important for other stuff)
   - [ ] optional: fluid pitch shift
   - [x] noise gen
