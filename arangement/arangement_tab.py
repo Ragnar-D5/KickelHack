@@ -48,7 +48,7 @@ class ArangementTabBody():
                                              'right': 'right',
                                              'top': 'bottom',
                                              'bottom': 'bottom'}),
-            "play_sound_button":UIButton(relative_rect=pg.Rect(-180, -100, 150, 30),
+            "play_sound_button":UIButton(relative_rect=pg.Rect(-180, -140, 150, 30),
                                     text='Play sound',
                                     manager=self.parent.ui_manager,
                                     anchors={'left': 'right',
