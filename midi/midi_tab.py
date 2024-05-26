@@ -21,8 +21,7 @@ RECT_HEIGHT = 880
 
 KEYS = [
     "C",
-    "C#",
-    "D",
+    "C#", "D",
     "D#",
     "E",
     "F",
@@ -43,7 +42,7 @@ class MidiTabBody:
         self.midi = None #read_midi("test_files/TOUHOU_-_Bad_Apple.mid")
         self.instrument = None
         self.bpm = BASE_BPM
-        self.play_instrument = instr.instruments.Instrument_func()
+        self.play_instrument = self.parent.base_instruments["Sine"]
         
         self.absolute_offset = [0,-1000]
         self.previous_position = (0,0)
@@ -58,7 +57,7 @@ class MidiTabBody:
                                              'right': 'right',
                                              'top': 'bottom',
                                              'bottom': 'bottom'})
-        self.drop_down = DropDown(parent=self, base_rect=pg.Rect(500,0,200,30),name="drop_down",options=["placeholder_1", "placeholder_2"])
+        self.drop_down = DropDown(parent=self, base_rect=pg.Rect(500,0,200,30),name="Instruments",options=list(self.parent.base_instruments.keys()))
     
     def reset(self):#reset everything
         self.parent = parent
@@ -167,6 +166,7 @@ class MidiTabBody:
         
         #draw rectangle ontop everything else
         pg.draw.rect(screen, pg.Color("black"), pg.Rect(RECT_X_OFFSET, RECT_Y_OFFSET, RECT_WIDTH, RECT_HEIGHT), 3)
+        self.drop_down.render(screen)
 
     def event(self, event: pg.event.Event):
         if event.type == pg.MOUSEMOTION: #drag with middle mouse button
@@ -227,3 +227,7 @@ class MidiTabBody:
         
         if event.type == pygame_gui.UI_FILE_DIALOG_PATH_PICKED:
                 self.load_midi(read_midi(event.text))
+
+        inst = self.drop_down.event([event])
+        if inst != "":
+            self.play_instrument = self.parent.base_instruments[inst]

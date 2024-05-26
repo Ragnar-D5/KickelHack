@@ -80,7 +80,6 @@ class InstrumentTabBody():
             self.Yarray[index] = self.comp_func(value)
 
     def ui(self,screen):
-        print("test")
         for i in range(AMOUNT_SLIDERS):
             self.vsliders[i].render(screen)
             if pg.font:

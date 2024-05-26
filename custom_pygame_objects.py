@@ -37,39 +37,50 @@ class DropDown(): #dropdown menu
         self.rect = base_rect
         self.name = name
         self.options = options
+        self.draw_menu = False
         self.menu_activ = False
         self.active_option = -1
     
     def render(self,screen):
-        pg.draw.rect(surf, "azure4", self.rect, width=0)
+        pg.draw.rect(screen, "azure4", self.rect, width=0)
         font = pg.font.Font(None, 32)
-        text = self.font.render(self.main, 1, (0, 0, 0))
+        if self.active_option == -1:
+            text = font.render(self.name, 1, (0, 0, 0))
+        else:
+            text = font.render(self.options[self.active_option], 1, (0, 0, 0))
         screen.blit(text, text.get_rect(center = self.rect.center))
-        if self.menu_activ:
-            for i in len(self.options):
+        if self.draw_menu:
+            for i in range(len(self.options)):
                 rect = self.rect.copy()
                 rect.y += (i+1) * self.rect.height
                 pg.draw.rect(screen, "azure3", rect, width=0)
-                option = self.font.render(self.options[i], 1, (0, 0, 0))
+                option = font.render(self.options[i], 1, (0, 0, 0))
                 screen.blit(option, option.get_rect(center = rect.center))
     
     def event(self, event_list):#TODO: rewrite
         mpos = pg.mouse.get_pos()
-        self.menu_active = self.rect.collidepoint(mpos)
-        
-        self.active_option = -1
-        for i in range(len(self.options)):
-            rect = self.rect.copy()
-            rect.y += (i+1) * self.rect.height
-            if rect.collidepoint(mpos):
-                self.active_option = i
-                break
+
+        self.menu_activ = self.rect.collidepoint(mpos)
+        rect = self.rect.copy()
+        rect.height += len(self.options) * self.rect.height
+        if self.draw_menu and rect.collidepoint(mpos):
+            self.menu_activ = True
+            self.active_option = -1
+            for i in range(len(self.options)):
+                rect = self.rect.copy()
+                rect.y += (i+1) * self.rect.height
+                if rect.collidepoint(mpos):
+                    self.active_option = i
+                    self.menu_activ = True
+                    break
+        elif self.rect.collidepoint(mpos):
+            self.draw_menu = True
+        else:
+            self.draw_menu = False
 
         for event in event_list:
             if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
-                if self.menu_active:
-                    self.draw_menu = not self.draw_menu
-                elif self.draw_menu and self.active_option >= 0:
+                if self.draw_menu and self.active_option >= 0:
                     self.draw_menu = False
-                    return self.active_option
-        return -1
+                    return self.options[self.active_option]
+        return ""
