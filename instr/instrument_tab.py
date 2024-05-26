@@ -2,13 +2,10 @@ import pygame as pg
 import matplotlib
 import instr.instruments
 import numpy as np
-<<<<<<< HEAD:instr/instrument_tab.py
 import custom_pygame_objects
-=======
 import matplotlib.backends.backend_agg as agg
 from pygame.locals import *
 import matplotlib.pyplot as plt
->>>>>>> c7d490a (running into issues):instruments/instrument_tab.py
 
 AMOUNT_SLIDERS = 8
 RECT_X_OFFSET = 100
@@ -105,9 +102,6 @@ class InstrumentTabBody():
         if event.type == pg.MOUSEMOTION:
             if self.activ_slider != None:
                 self.activ_slider.move_slider(event.pos)
-<<<<<<< HEAD:instr/instrument_tab.py
-        
-=======
                 self.update_Yarray()
             
 class VerticalSlider():
@@ -139,4 +133,3 @@ class VerticalSlider():
         x, y, w, h = self.rect
         cx,cy = (x+w/2.0,y+self.value/(self.value_range[1]-self.value_range[0])*h)
         return self.rect.collidepoint(pos) or ((cx-pos[0])**2+(cy-pos[1])**2 <= self.slider_radius**2)
->>>>>>> c7d490a (running into issues):instruments/instrument_tab.py
