@@ -146,7 +146,7 @@ if __name__ == "__main__":
     #debug_play_np_array(effects.resample(data[50000:150000],44100,2000))
     #debug_play_np_array(effects.pitch_shift(data[50000:150000],pitch=2.0),rate)
     #debug_play_np_array(effects.white_noise()*play_midi.INT16_LIMIT,rate)
-    print(midi.time_to_tick(1))
+    #print(midi.time_to_tick(1))
     #debug_play_np_array(play_midi.midi_play_sin(midi)*play_midi.INT16_LIMIT)
     #synth = midi.synthesize(fs=44100,wave=test.wave_func)*play_midi.INT16_LIMIT
     #debug_play_np_array(synth+effects.volume(midi.synthesize(wave = np.sin)*play_midi.INT16_LIMIT,0),44100)
