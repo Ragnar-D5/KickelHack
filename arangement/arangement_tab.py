@@ -1,10 +1,11 @@
 import pygame as pg
-from io_functions import read_midi
+from io_functions import read_midi,write_wav,read_wav
 import pygame_gui
 from pygame_gui.elements import UIButton
 from pygame_gui.windows import UIFileDialog
 import numpy as np
 import sounddevice as sd
+import play_midi
 
 TIMELINE_LENGTH = 10 #in seconds
 CHANNEL_HEIGHT = 100
@@ -24,10 +25,8 @@ class ArangementTabBody():
         #the place where everything sound is stored (in stereo)
         self.sound = np.array([])
         
-        #contains the blocks in chronological order
-        self.blocks = [
-            Block(self, data = np.ones(100000),sample_rate=44100,t=11.5,ch=0, text = "A")
-        ]
+        #contains the blocks (in chronological order if we had more time)
+        self.blocks = []
         self.active_block = None
         
         self.absolute_offset = [0,0]
@@ -48,8 +47,22 @@ class ArangementTabBody():
                                              'right': 'right',
                                              'top': 'bottom',
                                              'bottom': 'bottom'}),
-            "play_sound_button":UIButton(relative_rect=pg.Rect(-180, -100, 150, 30),
+            "play_sound_button":UIButton(relative_rect=pg.Rect(-180, -140, 150, 30),
                                     text='Play sound',
+                                    manager=self.parent.ui_manager,
+                                    anchors={'left': 'right',
+                                             'right': 'right',
+                                             'top': 'bottom',
+                                             'bottom': 'bottom'}),
+            "stop_sound_button":UIButton(relative_rect=pg.Rect(-180, -180, 150, 30),
+                                    text='Stop sound',
+                                    manager=self.parent.ui_manager,
+                                    anchors={'left': 'right',
+                                             'right': 'right',
+                                             'top': 'bottom',
+                                             'bottom': 'bottom'}),
+            "export_wav_button":UIButton(relative_rect=pg.Rect(-180, -220, 150, 30),
+                                    text='export wavy.wav',
                                     manager=self.parent.ui_manager,
                                     anchors={'left': 'right',
                                              'right': 'right',
@@ -57,6 +70,32 @@ class ArangementTabBody():
                                              'bottom': 'bottom'})
         }
         self.file_dialog = None
+        
+        self.old_block_range = (0,0)
+    
+    def recalculate(self,sample_range=(0,0)):
+        out_range = np.zeros((round(sample_range[1]*self.sample_rate-sample_range[0]*self.sample_rate),2))
+        for bl in self.blocks:
+            if bl.t <= sample_range[1] and bl.get_end_time() >= sample_range[0]:
+                for i in range(0,round(bl.get_end_time()*self.sample_rate-bl.t*self.sample_rate)):
+                    if len(bl.data) > i:
+                        if hasattr(bl.data[i], "__len__"):
+                            out_range[i][0] += bl.data[i][0]
+                            out_range[i][1] += bl.data[i][1]
+                        else:
+                            out_range[i][0] += bl.data[i]
+                            out_range[i][1] += bl.data[i]
+#         if sample_range[0] == 0:
+#             if out_range == []:
+#                 if sample_range[1] == len(self.sound)-1:
+#                     self.sound = np.array([])
+#                 self.sound = np.concatenate(self.sound[sample_range[1]:])
+#             self.sound = np.concatenate(out_range,self.sound[sample_range[1]:])
+        if len(self.sound.shape) == 1:
+            self.sound = np.transpose(np.tile(self.sound, (2, 1)))
+            
+        self.sound = np.concatenate((self.sound[:int(sample_range[0]*self.sample_rate)],out_range,self.sound[int(sample_range[1]*self.sample_rate):]))
+                
     
     def hide_buttons(self):
         for btn in self.buttons.values():
@@ -115,6 +154,7 @@ class ArangementTabBody():
             if event.button == 1:
                 for bl in self.blocks:
                     if bl.is_colliding(event.pos):
+                        self.old_block_range = (bl.t,bl.get_end_time())
                         self.active_block = bl
                         self.active_block.move(event.pos)
             if event.button == 3:
@@ -124,6 +164,8 @@ class ArangementTabBody():
         elif event.type == pg.MOUSEBUTTONUP:
             if self.active_block != None:
                 self.active_block.drop()
+                #self.recalculate(self.old_block_range)
+                #self.recalculate((self.active_block.t,self.active_block.get_end_time()))
                 self.active_block = None
             
 
@@ -134,13 +176,27 @@ class ArangementTabBody():
                                             # initial_file_path='',
                                             # allow_picking_directories=True,
                                             allow_existing_files_only=True,
-                                            allowed_suffixes={".wav",".mid"})
+                                            allowed_suffixes={".wav"})
             self.buttons["load_button"].disable()
         if (event.type == pygame_gui.UI_BUTTON_PRESSED and event.ui_element == self.buttons["play_sound_button"]):
-            sd.play(self.sound, self.sample_rate)
+            max_time = 0
+            for b in self.blocks:
+                max_time = b.get_end_time()
+            self.recalculate((0,max_time))
+            sd.play(self.sound/play_midi.INT16_LIMIT, self.sample_rate) #uses values between -1.0 and 1.0
+        if (event.type == pygame_gui.UI_BUTTON_PRESSED and event.ui_element == self.buttons["stop_sound_button"]):
+            sd.stop()
+        
+        if (event.type == pygame_gui.UI_BUTTON_PRESSED and event.ui_element == self.buttons["export_wav_button"]):
+            max_time = 0
+            for b in self.blocks:
+                max_time = b.get_end_time()
+            self.recalculate((0,max_time))
+            write_wav(path="wavy.wav",wav_rate=self.sample_rate,np_array=self.sound.astype(np.short))
         
         if (event.type == pygame_gui.UI_BUTTON_PRESSED and event.ui_element == self.buttons["midi_block_button"]):
-            self.blocks += [Block(self,self.parent.get_midi_block(),sample_rate=44100,t=0,ch=-1,text = "Midi"+str(len(self.blocks)))]
+            self.blocks = [Block(self,self.parent.get_midi_block(),sample_rate=44100,t=0,ch=1,text = "Midi"+str(len(self.blocks)))] + self.blocks
+            #self.recalculate((0,self.blocks[0].get_end_time()))
         
         if (event.type == pygame_gui.UI_WINDOW_CLOSE
                     and event.ui_element == self.file_dialog):
@@ -148,8 +204,11 @@ class ArangementTabBody():
                 self.file_dialog = None
         
         if event.type == pygame_gui.UI_FILE_DIALOG_PATH_PICKED:
-                if self.display_loaded_image is not None:
-                    self.display_loaded_image.kill()
+            _,ending = event.text.split(".")
+            if ending == "wav":
+                rate,data = read_wav(event.text)
+                self.blocks = [Block(self,data,sample_rate=rate,t=0,ch=1,text = "Wav"+str(len(self.blocks)))] + self.blocks
+                #self.recalculate((0,self.blocks[0].get_end_time()))
 
 
 class Block():#should be able to store midi, wav and custom music sections
@@ -162,6 +221,9 @@ class Block():#should be able to store midi, wav and custom music sections
         self.text = text
         
         self.effected = data
+    
+    def get_end_time(self):
+        return self.t + self.data.shape[0]/self.sample_rate 
     
     def apply_effects(self, effects):
         self.effected = effects(data) #TODO
